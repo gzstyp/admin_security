@@ -75,7 +75,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         //动态加载资源
         .anyRequest().access("@dynamicPermission.checkPermisstion(request,authentication)");*/
         //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/register").permitAll()//注意还有请求方式
+        http.authorizeRequests().antMatchers(HttpMethod.POST,ConfigFile.urls).permitAll()//注意还有请求方式
         .anyRequest().authenticated();//不走动态加载权限的处理
 
         //第4步：拦截账号、密码。覆盖 UsernamePasswordAuthenticationFilter过滤器

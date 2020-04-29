@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * token拦截器(最先请求的拦截器)
+ * token拦截器(最先请求的拦截器)||更换token在这里实现
  */
 @Component
 public class TokenRequestFilter extends OncePerRequestFilter {
@@ -45,14 +45,10 @@ public class TokenRequestFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        final String headerToken = request.getHeader(header);
-        System.out.println("headerToken = " + headerToken);
+        final String token = request.getHeader(header);
+        System.out.println("token = " + token);
         System.out.println("request getMethod = " + request.getMethod());
-        if (!StringUtils.isEmpty(headerToken)) {
-            //postMan测试时，自动假如的前缀，要去掉。
-            String token = headerToken.replace("Bearer", "").trim();
-            System.out.println("token = " + token);
-
+        if (!StringUtils.isEmpty(token)) {
             //判断令牌是否过期，默认是一周
             //比较好的解决方案是：
             //登录成功获得token后，将token存储到数据库（redis）
