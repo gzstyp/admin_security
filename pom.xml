@@ -23,6 +23,17 @@
         带token的请求接口
         通过token认证流程,在请求通过 TokenRequestFilter类的方法doFilterInternal()处理,判断请求头或判断是否需要放行的url，若不放行的url的则获取token并解析token的数据
 
+        走不走动态或是否要更为强大的权限处理区别在与:git有两个版本(分支dynamic走的是动态权限[anyRequest().access];分支no_dynamic走的不是更为强大的授权)
+
+        //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
+        http.authorizeRequests().antMatchers(HttpMethod.POST,ConfigFile.urls).permitAll()//注意还有请求方式
+        //动态加载资源
+        .anyRequest().access("@dynamicPermission.checkPermisstion(request,authentication)");
+
+        //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/register").permitAll()//注意还有请求方式
+        .anyRequest().authenticated();//不走动态加载权限的处理
+
     </description>
     <properties>
         <java.version>1.8</java.version>
