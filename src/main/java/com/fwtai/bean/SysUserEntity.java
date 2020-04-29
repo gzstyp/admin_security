@@ -15,7 +15,7 @@ public class SysUserEntity{
     public SysUserEntity() {
     }
 
-    public SysUserEntity(String userId,String userName,String passWord,Integer state,String description) {
+    public SysUserEntity(final String userId,final String userName,final String passWord,final Integer state,final String description) {
         this.userId = userId;
         this.userName = userName;
         this.passWord = passWord;
