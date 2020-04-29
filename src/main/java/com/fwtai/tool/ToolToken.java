@@ -29,8 +29,6 @@ import java.util.function.Function;
 @Component
 public class ToolToken{
 
-    public static final String TOKEN_HEADER = "Authorization";
-
     public static final String roles = "roles";
 
     private final static long expiry = 1000 * 60 * 60;//1个小时
