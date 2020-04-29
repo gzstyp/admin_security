@@ -11,6 +11,8 @@ package com.fwtai.config;
 
 public final class ConfigFile{
 
+    public final static String[] urls = {"/api/register"};
+
     public final static String roles = "roles";
 
     public static final String TOKEN_HEADER = "Authorization";

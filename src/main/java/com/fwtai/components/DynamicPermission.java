@@ -40,7 +40,7 @@ public class DynamicPermission {
 
             AntPathMatcher antPathMatcher = new AntPathMatcher();
             //当前访问路径
-            String requestURI = request.getRequestURI();
+            final String requestURI = request.getRequestURI();
             //提交类型
             final String urlMethod = request.getMethod();
 

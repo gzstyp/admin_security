@@ -15,6 +15,14 @@
 
         基于 Spring Boot 2 + spring security + jwt 构建前后端分离
 
+        流程:
+
+        请求登录,在 LoginAuthenticationFilter 处理完登录并认证用户名和密码成功后，则到了LoginAuthenticationFilter单独处理,
+        从内存数据库里查询是否存在才生成token并存入内存数据库,因为单独处理是方便存入内存数据库,最后返回给客户端
+
+        带token的请求接口
+        通过token认证流程,在请求通过 TokenRequestFilter类的方法doFilterInternal()处理,判断请求头或判断是否需要放行的url，若不放行的url的则获取token并解析token的数据
+
     </description>
     <properties>
         <java.version>1.8</java.version>

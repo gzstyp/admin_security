@@ -2,6 +2,7 @@ package com.fwtai.security;
 
 import com.fwtai.components.BCryptPasswordEncoderUtil;
 import com.fwtai.components.DynamicPermission;
+import com.fwtai.config.ConfigFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -70,7 +71,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         //第2步：让Security永远不会创建HttpSession，它不会使用HttpSession来获取SecurityContext
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers().cacheControl();
         //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/register").permitAll()//注意还有请求方式
+        http.authorizeRequests().antMatchers(HttpMethod.POST,ConfigFile.urls).permitAll()//注意还有请求方式
         //动态加载资源
         .anyRequest().access("@dynamicPermission.checkPermisstion(request,authentication)");
         //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.

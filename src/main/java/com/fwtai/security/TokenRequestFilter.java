@@ -1,5 +1,6 @@
 package com.fwtai.security;
 
+import com.fwtai.config.ConfigFile;
 import com.fwtai.tool.ToolToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * token拦截器
+ * token拦截器(最先请求的拦截器)
  */
 @Component
 public class TokenRequestFilter extends OncePerRequestFilter {
@@ -35,6 +36,15 @@ public class TokenRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request,final HttpServletResponse response,final FilterChain chain) throws ServletException, IOException {
+        final String uri = request.getRequestURI();
+        final String[] urls = ConfigFile.urls;
+        for(int x = 0; x < urls.length; x++){
+            final String url = urls[x];
+            if(uri.equals(url)){
+                chain.doFilter(request, response);
+                return;
+            }
+        }
         final String headerToken = request.getHeader(header);
         System.out.println("headerToken = " + headerToken);
         System.out.println("request getMethod = " + request.getMethod());

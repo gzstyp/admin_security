@@ -2,7 +2,7 @@ package com.fwtai.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 解决跨域问题
@@ -14,10 +14,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @官网 <url>http://www.yinlz.com</url>
 */
 @Configuration
-public class AccessControlAllowOriginFilter extends WebMvcConfigurerAdapter{
+public class AccessControlAllowOriginFilter implements WebMvcConfigurer{
 
     @Override
-    public void addCorsMappings(CorsRegistry registry){
+    public void addCorsMappings(final CorsRegistry registry){
         registry.addMapping("/**")
             .allowedOrigins("*")
             .allowedMethods("PUT","DELETE","GET","POST","OPTIONS")
