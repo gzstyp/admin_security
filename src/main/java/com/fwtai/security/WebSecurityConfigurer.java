@@ -59,8 +59,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     @Autowired
-    public void configureAuthentication(final AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoderUtil);
+    public void configureAuthentication(final AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoderUtil);
     }
 
     @Override
@@ -71,20 +71,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers().cacheControl();
         //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/register").permitAll()//注意还有请求方式
-                //ROLE_ADMIN可以操作任何事情
-                //.antMatchers("/**").hasRole("ADMIN")
-                //同等上一行代码
-                //.antMatchers("/**").hasAuthority("ROLE_ADMIN")
-                /*
-                 由于使用动态资源配置，以上代码在数据库中配置如下：
-                 在sys_backend_api_table中添加一条记录
-                 backend_api_id=1，
-                 backend_api_name = 所有API，
-                 backend_api_url=/**,
-                 backend_api_method=GET,POST,PUT,DELETE
-                 */
-                //动态加载资源
-                .anyRequest().access("@dynamicPermission.checkPermisstion(request,authentication)");
+        //动态加载资源
+        .anyRequest().access("@dynamicPermission.checkPermisstion(request,authentication)");
+        //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
+        /*http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/register").permitAll()//注意还有请求方式
+        .anyRequest().authenticated();//不走动态加载权限的处理*/
 
         //第4步：拦截账号、密码。覆盖 UsernamePasswordAuthenticationFilter过滤器
         http.addFilterAt(myUsernamePasswordAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);

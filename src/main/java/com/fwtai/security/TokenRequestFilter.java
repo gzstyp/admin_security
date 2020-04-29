@@ -3,6 +3,7 @@ package com.fwtai.security;
 import com.fwtai.tool.ToolToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,7 +34,7 @@ public class TokenRequestFilter extends OncePerRequestFilter {
     private String header = "Authorization";
 
     @Override
-    protected void doFilterInternal(final HttpServletRequest request,HttpServletResponse response,FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(final HttpServletRequest request,final HttpServletResponse response,final FilterChain chain) throws ServletException, IOException {
         final String headerToken = request.getHeader(header);
         System.out.println("headerToken = " + headerToken);
         System.out.println("request getMethod = " + request.getMethod());
@@ -59,9 +60,9 @@ public class TokenRequestFilter extends OncePerRequestFilter {
                 //通过令牌获取用户名称
                 String username = toolToken.extractUsername(token);
                 System.out.println("username = " + username);
-
                 //判断用户不为空，且SecurityContextHolder授权信息还是空的
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                final SecurityContext context = SecurityContextHolder.getContext();
+                if (username != null && context.getAuthentication() == null) {
                     //通过用户信息得到UserDetails
                     final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                     //验证令牌有效性
@@ -72,12 +73,11 @@ public class TokenRequestFilter extends OncePerRequestFilter {
                         new Throwable("验证token无效:"+e.getMessage());
                     }
                     if (validata) {
-                        // 将用户信息存入 authentication，方便后续校验
+                        // 将用户信息存入 authentication，方便后续校验,这个方法是要保存角色权限信息的
                         final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                        //
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         // 将 authentication 存入 ThreadLocal，方便后续获取用户信息
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        context.setAuthentication(authentication);
                     }
                 }
             }

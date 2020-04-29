@@ -28,9 +28,9 @@ public class AuthUserDetailsServiceImpl implements UserDetailsService {
      * @param username
      * @return
      * @throws UsernameNotFoundException
-     */
+    */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final SysUserEntity user = userService.getUserByUserName(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("%s.这个用户不存在", username));

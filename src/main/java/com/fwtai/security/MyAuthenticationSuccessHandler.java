@@ -33,15 +33,14 @@ public class MyAuthenticationSuccessHandler extends JSONAuthentication implement
     private ToolToken toolToken;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,HttpServletResponse response,Authentication authentication) throws IOException, ServletException{
+    public void onAuthenticationSuccess(final HttpServletRequest request,final HttpServletResponse response,final Authentication authentication) throws IOException, ServletException{
         //取得账号信息
         final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         SecurityContextHolder.getContext().setAuthentication(authentication);
         //
         System.out.println("userDetails = " + userDetails);
         //取token
-        //好的解决方案，登录成功后token存储到数据库中
-        //只要token还在过期内，不需要每次重新生成
+        //好的解决方案，登录成功后token存储到数据库中,只要token还在过期内，不需要每次重新生成
         //先去缓存中找
         String token = TokenCache.getTokenFromCache(userDetails.getUsername());
         if(token == null){
@@ -65,3 +64,7 @@ public class MyAuthenticationSuccessHandler extends JSONAuthentication implement
         this.WriteJSON(request,response,data);
     }
 }
+// 请求登录,在 LoginAuthenticationFilter 处理完登录并认证用户名和密码成功后，则到了LoginAuthenticationFilter单独处理,
+// 从内存数据库里查询是否存在才生成token并存入内存数据库,因为单独处理是方便存入内存数据库,最后返回给客户端
+
+// 通过token认证流程,在请求通过 TokenRequestFilter类的方法doFilterInternal()处理,判断请求头或判断是否需要放行的url，若不放行的url的则获取token并解析token的数据

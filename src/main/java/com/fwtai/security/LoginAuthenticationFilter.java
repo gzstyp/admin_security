@@ -27,7 +27,6 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
     public Authentication attemptAuthentication(final HttpServletRequest request,final HttpServletResponse response) throws AuthenticationException{
         if(request.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE) || request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)){
             final ObjectMapper mapper = new ObjectMapper();
-            UsernamePasswordAuthenticationToken authRequest = null;
             //取authenticationBean
             Map<String,String> authenticationBean = null;
             //用try with resource，方便自动释放资源
@@ -40,15 +39,13 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
             try{
                 if(!authenticationBean.isEmpty()){
                     //获得账号、密码
-                    String username = authenticationBean.get(SPRING_SECURITY_FORM_USERNAME_KEY);
-                    String password = authenticationBean.get(SPRING_SECURITY_FORM_PASSWORD_KEY);
+                    final String username = authenticationBean.get(SPRING_SECURITY_FORM_USERNAME_KEY);
+                    final String password = authenticationBean.get(SPRING_SECURITY_FORM_PASSWORD_KEY);
                     //可以验证账号、密码
-                    //System.out.println("username = " + username);
-                    //System.out.println("password = " + password);
                     //检测账号、密码是否存在
                     if(userService.checkLogin(username,password)){
-                        //将账号、密码装入UsernamePasswordAuthenticationToken中
-                        authRequest = new UsernamePasswordAuthenticationToken(username,password);
+                        //将账号、密码装入UsernamePasswordAuthenticationToken中,即这个方法是没有角色或权限,只是单纯的保存用户名和密码
+                        final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,password);// 这个方法是没有角色或权限
                         setDetails(request,authRequest);
                         return this.getAuthenticationManager().authenticate(authRequest);
                     }
