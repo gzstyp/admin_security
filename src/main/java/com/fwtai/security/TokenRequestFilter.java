@@ -64,7 +64,7 @@ public class TokenRequestFilter extends OncePerRequestFilter {
             }
             if (!check){
                 //通过令牌获取用户名称
-                String username = toolToken.extractUsername(token);
+                final String username = toolToken.extractUsername(token);
                 System.out.println("username = " + username);
                 //判断用户不为空，且SecurityContextHolder授权信息还是空的
                 final SecurityContext context = SecurityContextHolder.getContext();
