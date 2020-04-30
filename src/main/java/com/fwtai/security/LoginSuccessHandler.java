@@ -24,7 +24,7 @@ import java.util.Map;
  * 登录成功操作
  */
 @Component
-public class MyAuthenticationSuccessHandler extends JSONAuthentication implements AuthenticationSuccessHandler{
+public class LoginSuccessHandler extends JSONAuthentication implements AuthenticationSuccessHandler{
 
     @Autowired
     private SysFrontendMenuTableService service;

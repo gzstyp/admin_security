@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 权限校验处理器
+ * 权限校验拒绝处理器(拒绝访问)
  */
 @Component
-public class MyAccessDeniedHandler extends JSONAuthentication implements AccessDeniedHandler{
+public class AccessDeniedService extends JSONAuthentication implements AccessDeniedHandler{
 
     @Override
     public void handle(HttpServletRequest request,HttpServletResponse response,AccessDeniedException accessDeniedException) throws IOException, ServletException{

@@ -16,9 +16,9 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * 重写登录过滤器
+ * 登录过滤器
  */
-public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter{
 
     @Autowired
     private SysUserService userService;
@@ -34,7 +34,7 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
                 authenticationBean = mapper.readValue(is,Map.class);
             }catch(IOException e){
                 //将异常放到自定义的异常类中
-                throw new MyAuthenticationException(e.getMessage());
+                throw new AuthExceptionHandler(e.getMessage());
             }
             try{
                 if(!authenticationBean.isEmpty()){
@@ -51,7 +51,7 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
                     }
                 }
             }catch(Exception e){
-                throw new MyAuthenticationException(e.getMessage());
+                throw new AuthExceptionHandler(e.getMessage());
             }
             return null;
         }else{

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * 退出Handler
  */
 @Component
-public class MyLogoutHandler extends JSONAuthentication implements LogoutHandler {
+public class LogoutService extends JSONAuthentication implements LogoutHandler {
 
     private String header = "Authorization";
 

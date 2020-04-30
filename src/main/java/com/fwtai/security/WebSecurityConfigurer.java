@@ -31,21 +31,21 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private TokenRequestFilter tokenRequestFilter;
     @Autowired
-    private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+    private AuthenticationPointHandler authenticationPointHandler;
     @Autowired
-    private MyAccessDeniedHandler myAccessDeniedHandler;
+    private AccessDeniedService accessDeniedService;
 
     //登录成功处理器
     @Autowired
-    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+    private LoginSuccessHandler loginSuccessHandler;
     @Autowired
-    private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
+    private LoginFailureHandler loginFailureHandler;
 
     //退出处理器
     @Autowired
-    private MyLogoutHandler myLogoutHandler;
+    private LogoutService logoutService;
     @Autowired
-    private MyLogoutSuccessHandler myLogoutSuccessHandler;
+    private LogoutSuccessService logoutSuccessService;
 
     @Autowired
     private BCryptPasswordEncoderUtil bCryptPasswordEncoderUtil;
@@ -85,13 +85,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(tokenRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         //第6步：处理异常情况：认证失败和权限不足
-        http.exceptionHandling().authenticationEntryPoint(myAuthenticationEntryPoint).accessDeniedHandler(myAccessDeniedHandler);
+        http.exceptionHandling().authenticationEntryPoint(authenticationPointHandler).accessDeniedHandler(accessDeniedService);
 
         //第7步：登录,因为使用前端发送JSON方式进行登录，所以登录模式不设置也是可以的。
         http.formLogin();
 
         //第8步：退出
-        http.logout().addLogoutHandler(myLogoutHandler).logoutSuccessHandler(myLogoutSuccessHandler);
+        http.logout().addLogoutHandler(logoutService).logoutSuccessHandler(logoutSuccessService);
     }
 
     /**
@@ -100,12 +100,12 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     @Bean
-    public LoginAuthenticationFilter myUsernamePasswordAuthenticationFilter() throws Exception {
-        final LoginAuthenticationFilter filter = new LoginAuthenticationFilter();
+    public LoginAuthFilter myUsernamePasswordAuthenticationFilter() throws Exception {
+        final LoginAuthFilter filter = new LoginAuthFilter();
         //成功后处理
-        filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
+        filter.setAuthenticationSuccessHandler(loginSuccessHandler);
         //失败后处理
-        filter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);
+        filter.setAuthenticationFailureHandler(loginFailureHandler);
         filter.setAuthenticationManager(authenticationManagerBean());
         return filter;
     }

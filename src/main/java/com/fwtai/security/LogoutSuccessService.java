@@ -14,7 +14,7 @@ import java.io.IOException;
  * 成功退出处理器
  */
 @Component
-public class MyLogoutSuccessHandler extends JSONAuthentication implements LogoutSuccessHandler {
+public class LogoutSuccessService extends JSONAuthentication implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request,HttpServletResponse response,Authentication authentication) throws IOException, ServletException {
 //        UserDetails user = (UserDetails) authentication.getPrincipal();

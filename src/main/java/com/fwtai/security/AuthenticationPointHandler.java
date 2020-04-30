@@ -14,7 +14,7 @@ import java.io.IOException;
  * 身份校验失败处理器，如 token 错误
  */
 @Component
-public class MyAuthenticationEntryPoint extends JSONAuthentication implements AuthenticationEntryPoint{
+public class AuthenticationPointHandler extends JSONAuthentication implements AuthenticationEntryPoint{
 
     @Override
     public void commence(HttpServletRequest request,HttpServletResponse response,AuthenticationException authException) throws IOException, ServletException{

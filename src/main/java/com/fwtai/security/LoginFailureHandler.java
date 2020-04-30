@@ -14,7 +14,7 @@ import java.io.IOException;
  * 登录失败操作
  */
 @Component
-public class MyAuthenticationFailureHandler extends JSONAuthentication implements AuthenticationFailureHandler{
+public class LoginFailureHandler extends JSONAuthentication implements AuthenticationFailureHandler{
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,HttpServletResponse response,AuthenticationException e) throws IOException, ServletException{
