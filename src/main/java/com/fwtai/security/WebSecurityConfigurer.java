@@ -56,7 +56,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     /**
      * 从容器中取出 AuthenticationManagerBuilder，执行方法里面的逻辑之后，放回容器
      *
-     * @param authenticationManagerBuilder
+     * @param builder
      * @throws Exception
      */
     @Autowired
