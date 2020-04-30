@@ -36,6 +36,7 @@ public class TokenRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request,final HttpServletResponse response,final FilterChain chain) throws ServletException, IOException {
+        System.out.println("最先执行吗?");
         final String uri = request.getRequestURI();
         final String[] urls = ConfigFile.urls;
         for(int x = 0; x < urls.length; x++){
